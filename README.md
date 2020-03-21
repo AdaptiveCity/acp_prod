@@ -1,6 +1,6 @@
-# Intelligent City Platform production server build and system installation
+# Adaptive City Program production server build and system installation
 
-These steps describe the process of getting from a bare brand new server to a running Rita
+These steps describe the process of getting from a bare brand new server to a running ACP real-time server
 platform. The specific machine comments, e.g. regarding iTrac relate to a Dell PowerEdge server.
 
 ### Install Ubuntu on the server
