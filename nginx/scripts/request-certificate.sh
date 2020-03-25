@@ -10,7 +10,8 @@ fi
 
 certbot certonly \
     --manual \
-    --cert-name tfc_prod \
+    --cert-name acp_prod \
     --domains "${domain}" \
-    --manual-auth-hook /home/tfc_prod/tfc_prod/nginx/scripts/authenticator.sh \
-    --manual-cleanup-hook /home/tfc_prod/tfc_prod/nginx/scripts/cleanup.sh
+    --manual-auth-hook /home/acp_prod/acp_prod/nginx/scripts/authenticator.sh \
+    --manual-cleanup-hook /home/acp_prod/acp_prod/nginx/scripts/cleanup.sh
+
