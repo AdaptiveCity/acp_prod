@@ -1,0 +1,16 @@
+                                                                                
+{
+    "main": "acp_server.console.Console",
+    "options": {
+        "config": {
+            "module.name":      "console",
+            "module.id":        "A",
+
+            "eb.system_status": "acp.system_status",
+            "eb.console_out":   "acp.console_out",
+            "eb.manager":       "acp.manager",
+
+            "console.http.port":  8081
+        }
+    }
+}

@@ -68,18 +68,9 @@ UseDNS yes
 ssh-keygen -t rsa -b 4096 -C "username@tfc-appN"
 ```
 
-### Install emacs
-```
-sudo apt-get install emacs
-```
-
-### Add emacs/ssh config files
-
-If required, now is an opportunity to sftp `.emacs.el` and `.ssh/authorized_keys` from your other servers.
-
 ### Configure disks as LVM volumes
 
-Run ```tfc_prod/tools/mkdisks.sh``` (as below):
+Run ```acp_prod/tools/mkdisks.sh``` (as below):
 ```
 #!/bin/bash
 
@@ -189,18 +180,18 @@ and checked with
 update-java-alternatives --list
 ```
 
-### Create (non-sudo) tfc_prod user
+### Create (non-sudo) acp_prod user
 
 with `tfc-appN` as the correct hostname:
 
 ```
-sudo adduser tfc_prod
+sudo adduser acp_prod
 <reply to prompts>
 
-su tfc_prod
+su acp_prod
 <enter password>
 cd ~
-ssh-keygen -t rsa -b 4096 -C "tfc_prod@tfc-appN"
+ssh-keygen -t rsa -b 4096 -C "acp_prod@tfc-appN"
 <reply to prompts>
 ```
 
@@ -209,26 +200,26 @@ ssh-keygen -t rsa -b 4096 -C "tfc_prod@tfc-appN"
 sudo apt install git
 ```
 
-### Get latest tfc_prod build
+### Get latest acp_prod build
 
 ```
-su tfc_prod
+su acp_prod
 cd ~
 
-git clone https://github.com/SmartCambridge/tfc_prod.git
+git clone https://github.com/AdaptiveCity/acp_prod.git
 ```
 
-From another server, sftp the current `tfc_prod/secrets/` directory and `tfc_prod/secrets.sh` file.
+From another server, sftp the current `acp_prod/secrets/` directory.
 
 ### Update server `/etc/ssh/ssh_known_hosts`
 
 As a sudoer, run
 ```
-~tfc_prod/tfc_prod/scripts/update_known_hosts.sh >ssh_known_hosts
+~acp_prod/acp_prod/scripts/update_known_hosts.sh >ssh_known_hosts
 sudo mv ssh_known_hosts /etc/ssh/
 ```
 If you inspect the ssh_known_hosts file, you should see an entry for each `tfc-appX` server followed
-by an identical entry with the `smartcambridge.org` hostname.
+by an identical entry with the `csbb.uk` and `www.cddb.uk` hostnames.
 
 ### Install Nginx
 
@@ -239,150 +230,106 @@ See nginx/README.md
 See (monit/INSTALLATION.md)[monit/INSTALLATION.md]
 
 
-### Add the tfc_server JAR file to the tfc_prod directory
+### Add the acp_server JAR file to the acp_prod directory
 
-Ideally, as a developer user (not tfc_prod), install the tfc_server source 
-[https://github.com/SmartCambridge/tfc_server](https://github.com/SmartCambridge/tfc_server)
+Ideally, as a developer user (not acp_prod), install the acp_server source 
+[https://github.com/AdaptiveCity/acp_server](https://github.com/AdaptiveCity/acp_server)
 
-Run ```mvn clean package``` in the tfc_server directory to create the fat jar.
+Run ```mvn clean package``` in the acp_server directory to create the fat jar.
 
-Copy the fat jar file (such as ~/tfc_server/target/tfc_server-*-fat.jar) to (say) ~/tfc_prod/tfc_2017-09-27.jar.
+Copy the fat jar file (such as `~/acp_server/target/acp_server-*-fat.jar`) to (say) 
+`~/acp_prod/acp_YYYY-MM-DD.jar`, where `YYYY-MM-DD` is today's date.
 
-Alternatively you can simple collect the `tfc_prod/tfc_YYYY-MM-DD.jar` from another server
+Alternatively you can simple collect the `acp_prod/acp_YYYY-MM-DD.jar` from another server
 
-In the `tfc_prod` directory, create a symlink to the jar file (use the actual name, not tfc_YYYY_MM_DD) with:
-
-```
-rm tfc.jar
-ln -s tfc_YYYY_MM_DD.jar tfc.jar
-```
-
-### Create data directory links
-
-#### Run ```tfc_prod/tools/mkdirs.sh``` as below:
-```
-#!/bin/bash
-
-# create log directory for tfc_prod user
-
-sudo mkdir /var/log/tfc_prod
-sudo chown tfc_prod:tfc_prod /var/log/tfc_prod
-sudo chmod a+w /var/log/tfc_prod
-
-echo Log directory /var/log/tfc_prod is setup
-
-# create basic tfc directories in /mnt/sdb1 and /media
-
-sudo mkdir /media/tfc
-sudo chown tfc_prod:tfc_prod /media/tfc
-
-sudo mkdir /mnt/sdb1/tfc
-sudo chown tfc_prod:tfc_prod /mnt/sdb1/tfc
-
-echo Data directories /media/tfc and /mnt/sdb1/tfc setup
+In the `acp_prod` directory, create a symlink to the jar file (use the actual name, 
+not acp_YYYY_MM_DD) with:
 
 ```
-#### Create remainder of directories as tfc_prod user
+rm acp.jar
+ln -s acp_YYYY_MM_DD.jar acp.jar
+```
 
-```
-sudo su tfc_prod
-```
-Then run ```tfc_prod/tools/mkdirs_tfc_prod.sh``` as below:
+## Create data directory links
+
+### Create /media/acp for sensor data
+
+Create an `acp` directory on any filesystem, and link it to
+`/media/acp`, owned by the `acp_prod` user.
+
+E.g. you as sudoer can run ```acp_prod/tools/mkdirs.sh``` as below:
+
 ```
 #!/bin/bash
 
-# run as user tfc_prod
+# create log directory for acp_prod user
 
-# create tfc/vix directory and sub-dirs on sdb1
+sudo mkdir /var/log/acp_prod
+sudo chown acp_prod:acp_prod /var/log/acp_prod
+sudo chmod a+w /var/log/acp_prod
 
-mkdir /mnt/sdb1/tfc/vix
+echo Log directory /var/log/acp_prod is setup
 
-mkdir /mnt/sdb1/tfc/vix/data_bin
-mkdir /mnt/sdb1/tfc/vix/data_bin_json
-mkdir /mnt/sdb1/tfc/vix/data_zone
-mkdir /mnt/sdb1/tfc/vix/data_cache
-mkdir /mnt/sdb1/tfc/vix/data_monitor
-mkdir /mnt/sdb1/tfc/vix/data_monitor_json
+# create basic ACP directories in /mnt/sdb1 and /media
 
-# create links to all vix directories from /media/tfc
+sudo mkdir /mnt/sdb1/acp
+sudo chown acp_prod:acp_prod /mnt/sdb1/acp
 
-mkdir /media/tfc/vix
 
-ln -sfn /mnt/sdb1/tfc/vix/data_bin /media/tfc/vix/data_bin
-ln -sfn /mnt/sdb1/tfc/vix/data_bin_json /media/tfc/vix/data_bin_json
-ln -sfn /mnt/sdb1/tfc/vix/data_zone /media/tfc/vix/data_zone
-ln -sfn /mnt/sdb1/tfc/vix/data_cache /media/tfc/vix/data_cache
-ln -sfn /mnt/sdb1/tfc/vix/data_monitor /media/tfc/vix/data_monitor
-ln -sfn /mnt/sdb1/tfc/vix/data_monitor_json /media/tfc/vix/data_monitor_json
+sudo ln -s /mnt/sdb1/acp /media/acp
 
-# set up 'tfc/sys' directory
-
-mkdir /mnt/sdb1/tfc/sys
-ln -sfn /mnt/sdb1/tfc/sys /media/tfc/sys
-
-# set up 'tfc/cam_park_local' directory
-
-mkdir /mnt/sdb1/tfc/cam_park_local
-ln -sfn /mnt/sdb1/tfc/cam_park_local /media/tfc/cam_park_local
-
-# set up 'tfc/cam_park_rss' directory
-
-mkdir /mnt/sdb1/tfc/cam_park_rss
-ln -sfn /mnt/sdb1/tfc/cam_park_rss /media/tfc/cam_park_rss
-
-# set up 'tfc/cam_aq' directory
-
-mkdir /mnt/sdb1/tfc/cam_aq
-ln -sfn /mnt/sdb1/tfc/cam_aq /media/tfc/cam_aq
-
-# Cambridge Sensor Network - LoraWAN TTN
-# set up 'tfc/csn_ttn' directory
-
-mkdir /mnt/sdb1/tfc/csn_ttn
-ln -sfn /mnt/sdb1/tfc/csn_ttn /media/tfc/csn_ttn
-
-# copy data into tfc/sys
-
-cp -r /home/tfc_prod/tfc_prod/config/sys/* /media/tfc/sys
-
-# Create tfc_web log directories
-
-mkdir /var/log/tfc_prod/gunicorn
-mkdir /var/log/tfc_prod/pocket_log
-```
-
-### Create ```tfc_prod/secrets``` directory
-
-As tfc_prod user:
-```
-mkdir ~/tfc_prod/secrets
-```
-
-Use sftp to populate ```tfc_prod/secrets``` contents from another server.
-
-### Test run Rita Console
+echo Data directories set up at /media/acp
 
 ```
-java -cp tfc.jar io.vertx.core.Launcher run "service:uk.ac.cam.tfc_server.console.A" -cluster -cluster-port 10081 >/dev/null 2>>/var/log/tfc_prod/tfc_console.A.err &
+
+### Create acp_web log directories
+
+As user `acp_prod`:
+
 ```
+mkdir /var/log/acp_prod/gunicorn
+mkdir /var/log/acp_prod/pocket_log
+```
+
+### Create ```acp_prod/secrets``` directory
+
+As acp_prod user:
+
+Use sftp to populate ```acp_prod/secrets``` contents from another server.
+
+### Test run the ACP Console
+
+As the `acp_prod` user:
+```
+cd ~/acp_prod
+
+java -cp 'acp.jar:configs' io.vertx.core.Launcher run "service:console.A" -cluster >/dev/null 2>>/var/log/acp_prod/console.A.err &
+```
+
+You can check the verticle is running with `~/acp_prod/tools/ps.sh`.
+
+If the verticle fails to launch, re-run it without the stdout and stderr being redirected and
+see what errors you get.
 
 Test by browsing to ```http://localhost:8081/console``` and ```http://localhost/backdoor/console```.
 (Note for localhost you may use the remote server name if necessary).
 
-## Install tfc_web
+Also conform the logfile is being written to `/var/log/acp_prod/console.A.err`.
 
-### Download tfc_web
+# Install acp_web
+
+### Download acp_web
 ```
-git clone https://github.com/ijl20/tfc_web.git
+git clone https://github.com/AdaptiveCity/acp_web.git
 ```
 
 ### Setup log rotation
 
 ```
-sudo cp logrotate/tfc_prod /etc/logrotate.d/tfc_prod
+sudo cp logrotate/acp_prod /etc/logrotate.d/acp_prod
 ```
 
-### See tfc_web/README.md
+### See acp_web/README.md
 
 ### Configure email (for Monit alerts)
 
@@ -406,7 +353,7 @@ Note blank lines above, and finish email with CTRL-D.
 
 This ssmtp configuration does a reasonable job of getting
 email out of these systems. The envelope FROM address of mail sent by
-`root` and `tfc_prod` is re-written to `admin@smartcambridge.org`
+`root` and `acp_prod` is re-written to `admin@cdbb.uk`
 (and more local addresses can be added to this list in `revaliases`).
 The FROM address of all other
 mail has `@cam.ac.uk` appended. The envelope TO address of all mail for
@@ -414,20 +361,20 @@ local users with UID < 1000 is rewritten to
 `admin@smartcambridge.org`, and for all other users has
 `@cam.ac.uk` appended.
 
-This works for almost everything except mail to the 'tfc_prod' local user
-which fails because `tfc_prod@cam.ac.uk` doesn't exist. ssmtp
+This works for almost everything except mail to the 'acp_prod' local user
+which fails because `acp_prod@cam.ac.uk` doesn't exist. ssmtp
 explicitly doesn't support aliasing destination addresses for
 UIDs >= 1000. Th only way around this is to explicitly send such mail
 to an address that does work, e.e. by including
 
 ```
-MAILTO=admin@smartcambridge.org
+MAILTO=admin@cdbb.uk
 ```
 
-at the start of tfc_prod's crontab file.
+at the start of acp_prod's crontab file.
 
 ### Install/configure Monit
-Get the ```monitrc``` file  (from tfc_prod@tfc-app2.cl.cam.ac.uk:~/tfc_prod/monit/monitrc)
+Get the ```monitrc``` file  (from acp_prod@tfc-app2.cl.cam.ac.uk:~/acp_prod/monit/monitrc)
 Note the monitrc file contains
 1. The email address alerts will be sent to (and from)
 2. The username/password for the web access

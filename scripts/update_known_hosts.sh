@@ -2,9 +2,9 @@
 
 # update_known_hosts.sh
 #
-# Will collect host ssh keys from tfc-app[1-5] and write to STDOUT correct entries for
+# Will collect host ssh keys from tfc-app[6-9] and write to STDOUT correct entries for
 # /etc/ssh/ssh_known_hosts
-# A smartcambridge.org entry will be duplicated from each tfc-app[1-5] host key entry in ssh_known_host
+# A cdbb.uk entry will be duplicated from each tfc-app[6-9] host key entry in ssh_known_host
 #
 # This script can most simply be used with:
 # scripts/update_known_hosts.sh >ssh_known_hosts
@@ -14,7 +14,7 @@
 # delete bad entries from /etc/ssh/ssh_known_hosts and append new records from above.
 #
 
-for n in 1 2 3 4 5;
+for n in 6 7 8 9;
 do
   name=tfc-app${n}.cl.cam.ac.uk
   entry=$(ssh-keyscan -t ecdsa $name)
@@ -26,6 +26,6 @@ do
       echo bad exit for $name 1>&2
       continue
   fi
-  echo ${entry/$name/$name,smartcambridge.org,www.smartcambridge.org,$ip}
+  echo ${entry/$name/$name,cdbb.uk,www.cdbb.uk,$ip}
 done
 

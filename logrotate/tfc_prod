@@ -1,8 +1,8 @@
-# tfc_prod log rotation configuration
+# acp_prod log rotation configuration
 
-# Rotate tfc_web's gunicorn.err file and extract useful info
+# Rotate acp_web's gunicorn.err file and extract useful info
 
-/var/log/tfc_prod/gunicorn.err {
+/var/log/acp_prod/gunicorn.err {
     weekly
     missingok
     nodateext
@@ -10,18 +10,18 @@
     olddir gunicorn
     compress
     delaycompress
-    create 0644 tfc_prod tfc_prod
+    create 0644 acp_prod acp_prod
     postrotate
-        kill -USR1 $(cat /var/log/tfc_prod/gunicorn.pid) > /dev/null 2>/dev/null || true
-        mkdir -p /var/log/tfc_prod/pocket_log
-        grep '|logger|pocket|' /var/log/tfc_prod/gunicorn/gunicorn.err.1 >> /var/log/tfc_prod/pocket_log/pocket_log.$(date +%F).log
-	(for f in /var/log/tfc_prod/pocket_log/pocket_log.*.log; do cat ${f}; done) | /home/tfc_prod/tfc_prod/tools/sumarise_pocket_log.py > /var/log/tfc_prod/pocket_log/pocket_log.csv
+        kill -USR1 $(cat /var/log/acp_prod/gunicorn.pid) > /dev/null 2>/dev/null || true
+        mkdir -p /var/log/acp_prod/pocket_log
+        grep '|logger|pocket|' /var/log/acp_prod/gunicorn/gunicorn.err.1 >> /var/log/acp_prod/pocket_log/pocket_log.$(date +%F).log
+	(for f in /var/log/acp_prod/pocket_log/pocket_log.*.log; do cat ${f}; done) | /home/acp_prod/acp_prod/tools/sumarise_pocket_log.py > /var/log/acp_prod/pocket_log/pocket_log.csv
     endscript
 }
 
-# Rotate tfc_web's gunicorn.log file
+# Rotate acp_web's gunicorn.log file
 
-/var/log/tfc_prod/gunicorn.log {
+/var/log/acp_prod/gunicorn.log {
     weekly
     missingok
     nodateext
@@ -29,8 +29,8 @@
     olddir gunicorn
     compress
     delaycompress
-    create 0644 tfc_prod tfc_prod
+    create 0644 acp_prod acp_prod
     postrotate
-        kill -USR1 $(cat /var/log/tfc_prod/gunicorn.pid) > /dev/null 2>/dev/null || true
+        kill -USR1 $(cat /var/log/acp_prod/gunicorn.pid) > /dev/null 2>/dev/null || true
     endscript
 }

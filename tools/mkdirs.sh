@@ -1,20 +1,20 @@
 #!/bin/bash
 
-# create log directory for tfc_prod user
+# create log directory for acp_prod user
 
-sudo mkdir /var/log/tfc_prod
-sudo chown tfc_prod:tfc_prod /var/log/tfc_prod
-sudo chmod a+w /var/log/tfc_prod
+sudo mkdir /var/log/acp_prod
+sudo chown acp_prod:acp_prod /var/log/acp_prod
+sudo chmod a+w /var/log/acp_prod
 
-echo Log directory /var/log/tfc_prod is setup
+echo Log directory /var/log/acp_prod is setup
 
-# create basic tfc directories in /mnt/sdb1 and /media
+# create basic ACP directories in /mnt/sdb1 and /media
 
-sudo mkdir /media/tfc
-sudo chown tfc_prod:tfc_prod /media/tfc
+sudo mkdir /mnt/sdb1/acp
+sudo chown acp_prod:acp_prod /mnt/sdb1/acp
 
-sudo mkdir /mnt/sdb1/tfc
-sudo chown tfc_prod:tfc_prod /mnt/sdb1/tfc
 
-echo Data directories /media/tfc and /mnt/sdb1/tfc setup
+sudo ln -s /mnt/sdb1/acp /media/acp
+
+echo Data directories set up at /media/acp
 
