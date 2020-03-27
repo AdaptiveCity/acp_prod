@@ -153,19 +153,23 @@ function display_status(status)
 
     status_el.innerHTML = format_status(status); 
 
-    var seconds_since_ts = (new Date()).getTime()/1000 - status.ts;
-    //console.log('seconds_since_ts '+seconds_since_ts);
+    var now = (new Date()).getTime()/1000;  
+    var seconds_since_ts = now - status.ts;
+    console.log('seconds_since_ts ',seconds_since_ts, now);
                     
     if (seconds_since_ts > status_red_seconds)
       {
+        console.log('setting status red');
         status_el.setAttribute("style", "background-color: red; color: black");
       }
     else if (seconds_since_ts > status_amber_seconds)
       {
+        console.log('setting status amber');
         status_el.setAttribute("style", "background-color: yellow; color: black");
       }
     else
       {
+        console.log('setting status green');
         status_el.setAttribute("style", "background-color: green; color: white");
       }
 } // end display_status()
@@ -210,7 +214,7 @@ function get_status_then_display()
                   else
                       {
                         console.log( ' GET /console/status succeeded');
-                        //console.log('data='+data);
+                        console.log('data='+data);
                         var data_obj = JSON.parse(data);
                         //console.log('data module_name='+data_obj.module_name);
                         var status_array = data_obj.status;
@@ -229,9 +233,9 @@ function get_status_then_display()
   <body onload="init()">
 <h1 class="header_title">
 <a href="/"><img src="images/smart_cambridge_logo_rounded.png"/></a>
-SmartCambridge Platform Status
+Adaptive City Platform Status
 </h1>
-<p>This page shows the 'current status' of the various technical modules that make up the smartCAMBRIDGE real-time data platform.
+<p>This page shows the 'current status' of the various technical modules that make up the ACP real-time data platform.
   Green means the module is performing happily, Red indicates that module is currently offline.  Note that experimental modules will be
   launched and stopped from time to time and these may well appear on this page in red...
   </p>
@@ -240,10 +244,7 @@ SmartCambridge Platform Status
     <div class="status_area_heading">Feeds - the platform is receiving real-time data from these sources</div>
     <div class="module_area" id="module_area_feedhandler"></div>
     <div class="module_area" id="module_area_feedmaker"></div>
-  </div>
-  <div class="module_area_section">
-    <div class="status_area_heading">Traffic Zones - the platform is monitoring the traffic moving through these zones</div>
-    <div class="module_area" id="module_area_zone"></div>
+    <div class="module_area" id="module_area_feedmqtt"></div>
   </div>
   <div id="module_area_section">
     <div class="status_area_heading">Additional Modules - other system components</div>

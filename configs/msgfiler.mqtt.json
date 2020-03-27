@@ -1,0 +1,35 @@
+                                                                                
+{
+    "main":    "acp_server.msgfiler.MsgFiler",
+    "options":
+        { "config":
+          {
+
+            "module.name":           "msgfiler",
+            "module.id":             "mqtt",
+
+            "eb.system_status":      "acp.system_status",
+            "eb.console_out":        "acp.console_out",
+            "eb.manager":            "acp.manager",
+
+            "msgfiler.address": "acp.msgfiler.mqtt",
+
+            "msgfiler.filers":
+            [
+                { "source_address": "acp.feedmqtt.csn",
+                  "flatten":    "request_data",
+                  "store_path": "/media/acp/{{feed_id}}/sensors/{{acp_id}}/{{acp_ts|yyyy}}/{{acp_ts|MM}}",
+                  "store_name": "{{acp_id}}_{{acp_ts|yyyy}}-{{acp_ts|MM}}-{{acp_ts|dd}}.txt",
+                  "store_mode": "append"
+                },
+                { "source_address": "acp.feedmqtt.ttn",
+                  "flatten":    "request_data",
+                  "store_path": "/media/acp/{{feed_id}}/sensors/{{dev_id}}/{{acp_ts|yyyy}}/{{acp_ts|MM}}",
+                  "store_name": "{{dev_id}}_{{acp_ts|yyyy}}-{{acp_ts|MM}}-{{acp_ts|dd}}.txt",
+                  "store_mode": "append"
+                }
+            ]
+              
+          }
+        }
+}
