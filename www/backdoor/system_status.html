@@ -105,7 +105,7 @@ function format_date(d) {
 
 function format_status(status)
 {
-    var d = new Date(status.ts*1000);
+    var d = new Date(parseFloat(status.acp_ts)*1000);
 
     return status.module_name+'<br/>'+
            status.module_id+'<br/>'+
