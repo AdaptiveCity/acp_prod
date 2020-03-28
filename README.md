@@ -316,6 +316,17 @@ Test by browsing to ```http://localhost:8081/console``` and ```http://localhost/
 
 Also conform the logfile is being written to `/var/log/acp_prod/console.A.err`.
 
+## Setup crontab to start real-time platform on boot
+
+As `acp_prod` user:
+```
+crontab -e
+```
+Add entry:
+```
+@reboot /home/acp_prod/acp_prod/run.sh
+```
+
 # Install acp_web
 
 ### Download acp_web
