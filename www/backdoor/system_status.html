@@ -103,9 +103,14 @@ function format_date(d) {
     return [year, month, day].join('-');
 }
 
+function get_date_from_msg(msg)
+{
+    return new Date(parseFloat(msg.acp_ts)*1000);
+}
+
 function format_status(status)
 {
-    var d = new Date(parseFloat(status.acp_ts)*1000);
+    var d = get_date_from_msg(status);
 
     return status.module_name+'<br/>'+
            status.module_id+'<br/>'+
@@ -154,7 +159,9 @@ function display_status(status)
     status_el.innerHTML = format_status(status); 
 
     var now = (new Date()).getTime()/1000;  
-    var seconds_since_ts = now - status.ts;
+
+    var seconds_since_ts = now - get_date_from_msg(status).getTime()/1000;
+
     console.log('seconds_since_ts ',seconds_since_ts, now);
                     
     if (seconds_since_ts > status_red_seconds)
