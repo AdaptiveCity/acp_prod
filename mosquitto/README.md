@@ -80,7 +80,7 @@ mosquitto_pub -t 'hello' -m 'world' -u <username> -P <password> -p 8883 -h <host
 
 Add the mosquitto bridge config:
 ```
-sudo cp ~acp_prod/acp_prod/secrets/bridge_ttn.conf /etc/mosquitto/conf.d/
+sudo cp ~acp_prod/acp_prod/secrets/mosquitto_ttn.conf /etc/mosquitto/conf.d/
 ```
 
 Restart mosquitto as before.
