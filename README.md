@@ -159,27 +159,6 @@ df -h
 ll /mnt/sdb1
 ```
 
-### Install Java 8 SDK (JRE?)
-
-```
-sudo apt-get install openjdk-8-jdk
-```
-test with
-```
-java -version
-```
-You should see the SDK version 1.8.xxx.
-
-Note that if multiple java versions are to be installed (e.g. on a development server)
-then the default can be set with
-```
-sudo update-alternatives --config java
-```
-and checked with
-```
-update-java-alternatives --list
-```
-
 ### Create (non-sudo) acp_prod user
 
 with `tfc-appN` as the correct hostname:
@@ -225,24 +204,23 @@ by an identical entry with the `csbb.uk` and `www.cddb.uk` hostnames.
 
 See nginx/README.md
 
-### Install Monit (?)
+### Install Mosquitto
 
-See (monit/INSTALLATION.md)[monit/INSTALLATION.md]
-
+See mosquitto/README.md
 
 ### Add the acp_server JAR file to the acp_prod directory
 
-Ideally, as a developer user (not acp_prod), install the acp_server source 
+Ideally, as a developer user (not acp_prod), install the acp_server source
 [https://github.com/AdaptiveCity/acp_server](https://github.com/AdaptiveCity/acp_server)
 
 Run ```mvn clean package``` in the acp_server directory to create the fat jar.
 
-Copy the fat jar file (such as `~/acp_server/target/acp_server-*-fat.jar`) to (say) 
+Copy the fat jar file (such as `~/acp_server/target/acp_server-*-fat.jar`) to (say)
 `~/acp_prod/acp_YYYY-MM-DD.jar`, where `YYYY-MM-DD` is today's date.
 
 Alternatively you can simple collect the `acp_prod/acp_YYYY-MM-DD.jar` from another server
 
-In the `acp_prod` directory, create a symlink to the jar file (use the actual name, 
+In the `acp_prod` directory, create a symlink to the jar file (use the actual name,
 not acp_YYYY_MM_DD) with:
 
 ```
@@ -311,7 +289,7 @@ You can check the verticle is running with `~/acp_prod/tools/ps.sh`.
 If the verticle fails to launch, re-run it without the stdout and stderr being redirected and
 see what errors you get.
 
-Test by browsing to ```http://localhost:8081/console``` and ```http://localhost/backdoor/console```.
+Test by browsing to `http://localhost/backdoor/system_status.html`.
 (Note for localhost you may use the remote server name if necessary).
 
 Also conform the logfile is being written to `/var/log/acp_prod/console.A.err`.
@@ -331,7 +309,7 @@ Add entry:
 
 ### Download acp_web
 ```
-git clone https://github.com/AdaptiveCity/acp_web.git
+git clone https://github.com/AdaptiveCity/acp_web
 ```
 
 ### Setup log rotation
@@ -369,7 +347,7 @@ email out of these systems. The envelope FROM address of mail sent by
 The FROM address of all other
 mail has `@cam.ac.uk` appended. The envelope TO address of all mail for
 local users with UID < 1000 is rewritten to
-`admin@smartcambridge.org`, and for all other users has
+`admin@cdbb.uk`, and for all other users has
 `@cam.ac.uk` appended.
 
 This works for almost everything except mail to the 'acp_prod' local user
@@ -384,20 +362,6 @@ MAILTO=admin@cdbb.uk
 
 at the start of acp_prod's crontab file.
 
-### Install/configure Monit
-Get the ```monitrc``` file  (from acp_prod@tfc-app2.cl.cam.ac.uk:~/acp_prod/monit/monitrc)
-Note the monitrc file contains
-1. The email address alerts will be sent to (and from)
-2. The username/password for the web access
+### (For optional status alerts) Install Monit
 
-```
-sudo apt install monit
-sudo cp monitrc /etc/monit
-sudo service monit restart
-```
-Note that monitrc contains the email address Alerts should be sent to, so check that.
-An alert should be set as soon as Monit is restarted (testfile does not exist) so check your inbox.
-Final test by visiting the local monit web page (note the username/password from monitrc):
-```
-https://tfc-appZ.cl.cam.ac.uk/system/monitor/
-```
+See (monit/INSTALLATION.md)[monit/INSTALLATION.md]
