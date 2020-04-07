@@ -1,22 +1,18 @@
 #!/bin/bash
 
-TODAY=$(date +'%Y/%m/%d')
-
 FEEDS=(
-/media/tfc/sirivm_json/data_monitor
-/media/tfc/cam_park_rss/data_monitor
-/media/tfc/cam_park_rss/data_monitor_json
-/media/tfc/csn_ttn/data_monitor
-/media/tfc/google_traffic_map/cambridge/$TODAY
-/media/tfc/btjourney/journeytimes/data_monitor
-/media/tfc/btjourney/journeytimes/data_monitor_json
+/media/acp/mqtt_ttn/data_monitor
+/media/acp/mqtt_csn/data_monitor
 )
 
-date
+TODAY=$(date +'%Y/%m/%d')
+
+printf "Current time: %s\n" "$(date)"
+
 for f in ${FEEDS[@]}
 do
     ts=$(stat --printf='%Z' $f)
-    printf "%12s %s\n" "$(date -d @$ts)" $f
+    printf "%12s @ %s\n" $f "$(date -d @$ts)"
 done
 
 

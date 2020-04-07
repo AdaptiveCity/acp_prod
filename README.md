@@ -159,27 +159,6 @@ df -h
 ll /mnt/sdb1
 ```
 
-### Install Java 8 SDK (JRE?)
-
-```
-sudo apt-get install openjdk-8-jdk
-```
-test with
-```
-java -version
-```
-You should see the SDK version 1.8.xxx.
-
-Note that if multiple java versions are to be installed (e.g. on a development server)
-then the default can be set with
-```
-sudo update-alternatives --config java
-```
-and checked with
-```
-update-java-alternatives --list
-```
-
 ### Create (non-sudo) acp_prod user
 
 with `tfc-appN` as the correct hostname:
@@ -224,6 +203,10 @@ by an identical entry with the `csbb.uk` and `www.cddb.uk` hostnames.
 ### Install Nginx
 
 See nginx/README.md
+
+### Install Zookeeper
+
+See zookeeper/README.md
 
 ### Install Monit (?)
 
