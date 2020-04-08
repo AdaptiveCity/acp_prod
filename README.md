@@ -206,12 +206,11 @@ See nginx/README.md
 
 ### Install Zookeeper
 
-See zookeeper/README.md
+See [https://github.com/AdaptiveCity/acp_zookeeper](https://github.com/AdaptiveCity/acp_zookeeper)
 
-### Install Monit (?)
+### Install MQTT (mosquitto)
 
-See (monit/INSTALLATION.md)[monit/INSTALLATION.md]
-
+See [https://github.com/AdaptiveCity/acp_local_mqtt](https://github.com/AdaptiveCity/acp_local_mqtt)
 
 ### Add the acp_server JAR file to the acp_prod directory
 
@@ -368,6 +367,10 @@ MAILTO=admin@cdbb.uk
 at the start of acp_prod's crontab file.
 
 ### Install/configure Monit
+
+See (monit/INSTALLATION.md)[monit/INSTALLATION.md]
+
+
 Get the ```monitrc``` file  (from acp_prod@tfc-app2.cl.cam.ac.uk:~/acp_prod/monit/monitrc)
 Note the monitrc file contains
 1. The email address alerts will be sent to (and from)
