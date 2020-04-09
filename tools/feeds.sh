@@ -2,6 +2,7 @@
 
 FEEDS=(
 /media/acp/mqtt_ttn/data_monitor
+/media/acp/mqtt_acp/data_monitor
 /media/acp/mqtt_csn/data_monitor
 )
 
