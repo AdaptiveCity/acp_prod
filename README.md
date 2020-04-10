@@ -204,9 +204,13 @@ by an identical entry with the `csbb.uk` and `www.cddb.uk` hostnames.
 
 See nginx/README.md
 
-### Install Mosquitto
+### Install Zookeeper
 
-See mosquitto/README.md
+See [https://github.com/AdaptiveCity/acp_zookeeper](https://github.com/AdaptiveCity/acp_zookeeper)
+
+### Install MQTT (mosquitto)
+
+See [https://github.com/AdaptiveCity/acp_local_mqtt](https://github.com/AdaptiveCity/acp_local_mqtt)
 
 ### Add the acp_server JAR file to the acp_prod directory
 
@@ -365,3 +369,4 @@ at the start of acp_prod's crontab file.
 ### (For optional status alerts) Install Monit
 
 See (monit/INSTALLATION.md)[monit/INSTALLATION.md]
+
