@@ -202,7 +202,7 @@ by an identical entry with the `csbb.uk` and `www.cddb.uk` hostnames.
 
 ### Install Nginx
 
-See nginx/README.md
+See [nginx/README.md](nginx/README.md)
 
 ### Install Zookeeper
 

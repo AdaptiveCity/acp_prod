@@ -44,15 +44,17 @@ Set up the userv scripts to be triggered by a key-based logon to user `acme-chal
 
 ```
 sudo mkdir /usr/local/lib/userv/
-sudo cp ~tfc_prod/tfc_prod/nginx/scripts/acme-challenge.target /usr/local/lib/userv/
-sudo cp ~tfc_prod/tfc_prod/nginx/scripts/acme-challenge /etc/userv/services.d/
+sudo cp ~acp_prod/acp_prod/nginx/scripts/acme-challenge.target /usr/local/lib/userv/
+sudo cp ~acp_prod/acp_prod/nginx/scripts/acme-challenge /etc/userv/services.d/
 ```
 
 Setup a script that will be run following successful certificate renewal
 which will reload nginx
 
 ```
-sudo cp ~tfc_prod/tfc_prod/nginx/scripts/deploy.sh /etc/letsencrypt/renewal-hooks/deploy/
+sudo mkdir /etc/letsencrypt/renewal-hooks
+sudo mkdir /etc/letsencrypt/renewal-hooks/deploy
+sudo cp ~acp_prod/acp_prod/nginx/scripts/deploy.sh /etc/letsencrypt/renewal-hooks/deploy/
 ```
 
 Create the user `acme-challenge`. The `authorized_keys` file will enforce the userv execution
@@ -68,14 +70,14 @@ Create the webspace that letsencrypt will use for the challenge:
 
 ```
 sudo mkdir /var/www/acme-challenge
-sudo cp ~tfc_prod/tfc_prod/nginx/www-acme-challenge/* /var/www/acme-challenge/
+sudo cp ~acp_prod/acp_prod/nginx/www-acme-challenge/* /var/www/acme-challenge/
 ```
 
 ## Setup initial Nginx, get certificates
 
 ```
 sudo mkdir /etc/nginx/includes2
-sudo cp /home/tfc_prod/tfc_prod/nginx/includes2/* /etc/nginx/includes2
+sudo cp ~acp_prod/acp_prod/nginx/includes2/* /etc/nginx/includes2
 ```
 
 Follow the steps in **Option A** or **Option B** as appropriate:
@@ -83,14 +85,15 @@ Follow the steps in **Option A** or **Option B** as appropriate:
 ### Option A: for a new install
 
 ```
-sudo cp /home/tfc_prod/tfc_prod/nginx/sites-available/* /etc/nginx/sites-available
+sudo cp ~acp_prod/acp_prod/nginx/sites-available/* /etc/nginx/sites-available
 sudo rm /etc/nginx/sites-enabled/*
 ```
 
 Install a temporary, non-TLS nginx configuration and use this to get certificates
-for this server, and for smartcambridge.org
+for this server, and for cdbb.uk
 
 ```
+sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/tls-bootstrap.conf /etc/nginx/sites-enabled/
 ```
 
@@ -145,20 +148,8 @@ is not working as is should, so go back and fix that.
 Enter these commands and respond when prompted:
 
 ```
-sudo ~tfc_prod/tfc_prod/nginx/scripts/request-certificate.sh
-sudo ~tfc_prod/tfc_prod/nginx/scripts/request-smartcambridge-certificate.sh
-```
-
-## If required, configure carrier.csi.cam.ac.uk support
-
-Collect certificates for carrier.csi.cam.ac.uk from another machine that already has them
-
-```
-sudo mkdir /etc/nginx/ssl
-sudo scp root@<other-server>:/etc/nginx/ssl/carrier.pem /etc/nginx/ssl
-sudo scp root@<other-server>:/etc/nginx/ssl/carrier.key /etc/nginx/ssl
-sudo chmod 600 /etc/nginx/ssl/*
-sudo chmod 700 /etc/nginx/ssl
+sudo ~acp_prod/acp_prod/nginx/scripts/request-certificate.sh
+sudo ~acp_prod/acp_prod/nginx/scripts/request-cdbb-certificate.sh
 ```
 
 ## Restart nginx with production configuration:
@@ -172,24 +163,19 @@ sudo rm /etc/nginx/sites-enabled/tls-bootstrap.conf
 Link to the chose site configurations in `/etc/nginx/sites-enabled`:
 
 ```
-sudo ln -s /etc/nginx/sites-available/tfc_prod2.conf /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/acp_prod.conf /etc/nginx/sites-enabled/
 ```
 
-For any machine that will or could run `smartcambridge.org`:
+For any machine that will or could run `cdbb.uk`:
 
 ```
-sudo ln -s /etc/nginx/sites-available/smartcambridge.conf /etc/nginx/sites-enabled/
-```
-
-For any machine that will or could run `carrier.csi.cam.ac.uk`:
-
-```
-sudo ln -s /etc/nginx/sites-available/carrier.csi.cam.ac.uk.conf /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/cdbb.conf /etc/nginx/sites-enabled/
 ```
 
 Install default vhost config and a 'dummy' ssl key and certificate
 
 ```
+sudo mkdir /etc/nginx/ssl
 sudo cp /home/tfc_prod/tfc_prod/nginx/dummy.key /etc/nginx/ssl/
 sudo cp /home/tfc_prod/tfc_prod/nginx/dummy.crt /etc/nginx/ssl/
 sudo ln -s /etc/nginx/sites-available/000-default.conf /etc/nginx/sites-enabled/
@@ -201,10 +187,12 @@ Check the file exists:
 /etc/letsencrypt/options-ssl-nginx.conf
 ```
 
-If not, then download from
-[https://github.com/certbot/certbot/blob/master/certbot-nginx/certbot_nginx/options-ssl-nginx.conf](https://github.com/certbot/certbot/blob/master/certbot-nginx/certbot_nginx/options-ssl-nginx.conf)
+If not, then search Google "options-ssl-nginx.conf" and download from `github.com/certbot` with
+```
+wget "<link to raw file>"
+```
 
-and then check and restart nginx:
+Check and restart nginx:
 
 ```
 sudo nginx -t
