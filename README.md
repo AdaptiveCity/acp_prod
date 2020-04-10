@@ -204,33 +204,30 @@ by an identical entry with the `csbb.uk` and `www.cddb.uk` hostnames.
 
 See [nginx/README.md](nginx/README.md)
 
+### Install Java 8 SDK (JRE?)
+
+```
+sudo apt-get install openjdk-8-jdk
+```
+test with
+```
+java -version
+```
+You should see the SDK version 1.8.xxx.
+
+Note that if multiple java versions are to be installed (e.g. on a development server)
+then the default can be set with
+```
+sudo update-alternatives --config java
+```
+and checked with
+```
+update-java-alternatives --list
+```
+
 ### Install Zookeeper
 
 See [https://github.com/AdaptiveCity/acp_zookeeper](https://github.com/AdaptiveCity/acp_zookeeper)
-
-### Install MQTT (mosquitto)
-
-See [https://github.com/AdaptiveCity/acp_local_mqtt](https://github.com/AdaptiveCity/acp_local_mqtt)
-
-### Add the acp_server JAR file to the acp_prod directory
-
-Ideally, as a developer user (not acp_prod), install the acp_server source
-[https://github.com/AdaptiveCity/acp_server](https://github.com/AdaptiveCity/acp_server)
-
-Run ```mvn clean package``` in the acp_server directory to create the fat jar.
-
-Copy the fat jar file (such as `~/acp_server/target/acp_server-*-fat.jar`) to (say)
-`~/acp_prod/acp_YYYY-MM-DD.jar`, where `YYYY-MM-DD` is today's date.
-
-Alternatively you can simple collect the `acp_prod/acp_YYYY-MM-DD.jar` from another server
-
-In the `acp_prod` directory, create a symlink to the jar file (use the actual name,
-not acp_YYYY_MM_DD) with:
-
-```
-rm acp.jar
-ln -s acp_YYYY_MM_DD.jar acp.jar
-```
 
 ## Create data directory links
 
@@ -278,6 +275,30 @@ mkdir /var/log/acp_prod/pocket_log
 As acp_prod user:
 
 Use sftp to populate ```acp_prod/secrets``` contents from another server.
+
+### Install MQTT (mosquitto)
+
+See [https://github.com/AdaptiveCity/acp_local_mqtt](https://github.com/AdaptiveCity/acp_local_mqtt)
+
+### Add the acp_server JAR file to the acp_prod directory
+
+Ideally, as a developer user (not acp_prod), install the acp_server source
+[https://github.com/AdaptiveCity/acp_server](https://github.com/AdaptiveCity/acp_server)
+
+Run ```mvn clean package``` in the acp_server directory to create the fat jar.
+
+Copy the fat jar file (such as `~/acp_server/target/acp_server-*-fat.jar`) to (say)
+`~/acp_prod/acp_YYYY-MM-DD.jar`, where `YYYY-MM-DD` is today's date.
+
+Alternatively you can simple collect the `acp_prod/acp_YYYY-MM-DD.jar` from another server
+
+In the `acp_prod` directory, create a symlink to the jar file (use the actual name,
+not acp_YYYY_MM_DD) with:
+
+```
+rm acp.jar
+ln -s acp_YYYY_MM_DD.jar acp.jar
+```
 
 ### Test run the ACP Console
 
