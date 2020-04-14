@@ -199,7 +199,10 @@ sudo nginx -t
 sudo service nginx restart
 ```
 
-You should be able to confirm access is enabled via https, and http requests are upgraded.
+You should be able to confirm access is enabled via https, and http requests are upgraded. Browse to
+```
+https://<server_name>/local_rule
+```
 
 Feeds can be tested with:
 ```

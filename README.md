@@ -257,7 +257,7 @@ See [https://github.com/AdaptiveCity/acp_zookeeper](https://github.com/AdaptiveC
 Create an `acp` directory on any filesystem, and link it to
 `/media/acp`, owned by the `acp_prod` user.
 
-E.g. you as sudoer can run ```acp_prod/tools/mkdirs.sh``` as below:
+E.g. you as sudoer can run `~acp_prod/acp_prod/tools/mkdirs.sh` as below:
 
 ```
 #!/bin/bash
@@ -303,12 +303,24 @@ See [https://github.com/AdaptiveCity/acp_local_mqtt](https://github.com/Adaptive
 
 ### Add the acp_server JAR file to the acp_prod directory
 
-Ideally, as a developer user (not acp_prod), install the acp_server source
-[https://github.com/AdaptiveCity/acp_server](https://github.com/AdaptiveCity/acp_server)
+As sudoer:
+```
+sudo apt install maven
+git clone https://github.com/AdaptiveCity/acp_server
+cd acp_server
+mvn clean package
+```
 
-Run ```mvn clean package``` in the acp_server directory to create the fat jar.
+Confirm `zookeeper.json` hostname is correctly listed in `"rootPath":"acp_prod/<servername>":
+```
+cat configs/zookeeper.json
+```
 
-Copy the fat jar file (such as `~/acp_server/target/acp_server-*-fat.jar`) to (say)
+As user `acp_prod`:
+
+1. copy the sudoer's `acp_server/configs/zookeeper.json` to `~acp_prod/acp_prod/configs/'
+
+2. Copy the fat jar file (sudoer `acp_server/target/acp_server-*-fat.jar`) to
 `~/acp_prod/acp_YYYY-MM-DD.jar`, where `YYYY-MM-DD` is today's date.
 
 Alternatively you can simple collect the `acp_prod/acp_YYYY-MM-DD.jar` from another server
@@ -321,7 +333,25 @@ rm acp.jar
 ln -s acp_YYYY_MM_DD.jar acp.jar
 ```
 
-### Test run the ACP Console
+## Start the real-time platform
+
+As `acp_prod` user:
+```
+~/acp_prod/run.sh
+```
+
+## Setup crontab to start real-time platform on boot
+
+As `acp_prod` user:
+```
+crontab -e
+```
+Add entry:
+```
+@reboot /home/acp_prod/acp_prod/run.sh
+```
+
+### To diagnose issues, test run the ACP Console
 
 As the `acp_prod` user:
 ```
@@ -340,16 +370,6 @@ Test by browsing to `http://localhost/backdoor/system_status.html`.
 
 Also conform the logfile is being written to `/var/log/acp_prod/console.A.err`.
 
-## Setup crontab to start real-time platform on boot
-
-As `acp_prod` user:
-```
-crontab -e
-```
-Add entry:
-```
-@reboot /home/acp_prod/acp_prod/run.sh
-```
 
 # Install acp_web
 
