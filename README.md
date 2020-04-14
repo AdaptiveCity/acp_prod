@@ -219,7 +219,7 @@ As a sudoer, run
 sudo mv ssh_known_hosts /etc/ssh/
 ```
 If you inspect the ssh_known_hosts file, you should see an entry for each `tfc-appX` server followed
-by an identical entry with the `csbb.uk` and `www.cddb.uk` hostnames.
+by an identical entry with the `cdbb.uk` and `www.cddb.uk` hostnames.
 
 ### Install Nginx
 

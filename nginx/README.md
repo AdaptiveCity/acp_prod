@@ -8,7 +8,7 @@ sudo apt install software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt update
 sudo apt install nginx python-certbot-nginx userv
-
+sudo apt upgrade
 ```
 At this point (after the `sudo apt install nginx`) nginx will be running, i.e. serving web pages
 so you can test you receive a default home page with:
@@ -34,10 +34,11 @@ set permissions e.g. via
 
 ```
 sudo scp root@<other-server>:/root/acme-challenge-keys /root/acme-challenge-keys
-sudo chmod 644 /root/acme-challenge-keys/*
+
+sudo chmod 644 /root/acme-challenge-keys/authorized_keys
+sudo chmod 644 /root/acme-challenge-keys/acme-challenge-key.pub
 sudo chmod 600 /root/acme-challenge-keys/acme-challenge-key
 sudo chmod 755 /root/acme-challenge-keys
-
 ```
 
 Set up the userv scripts to be triggered by a key-based logon to user `acme-challenge`:
@@ -77,7 +78,7 @@ sudo cp ~acp_prod/acp_prod/nginx/www-acme-challenge/* /var/www/acme-challenge/
 
 ```
 sudo mkdir /etc/nginx/includes2
-sudo cp ~acp_prod/acp_prod/nginx/includes2/* /etc/nginx/includes2
+sudo cp ~acp_prod/acp_prod/nginx/includes2/* /etc/nginx/includes2/
 ```
 
 Follow the steps in **Option A** or **Option B** as appropriate:
@@ -93,7 +94,6 @@ Install a temporary, non-TLS nginx configuration and use this to get certificate
 for this server, and for cdbb.uk
 
 ```
-sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/tls-bootstrap.conf /etc/nginx/sites-enabled/
 ```
 
@@ -107,19 +107,19 @@ If that file is accessible then your nginx configuration required for the letsen
 challenge is already in place and you can skip this Option and jump to the next
 section 'Continue nginx configuration'
 
-Assuming you are running an existing nginx configuration `tfc_prod.conf`, you can
+Assuming you are running an existing nginx configuration `acp_prod.conf`, you can
 obtain the letsencrypt certificates by adding an `include` file:
 
 ```
-sudo cp ~tfc_prod/tfc_prod/nginx/includes/letsencrypt_port_80.conf /etc/nginx/includes/
+sudo cp ~acp_prod/acp_prod/nginx/includes/letsencrypt_port_80.conf /etc/nginx/includes/
 ```
 
 Copy the following files (for each host that is to be supported on your server):
 
 ```
-sudo cp /home/tfc_prod/tfc_prod/nginx/sites-available/tfc_prod2.conf /etc/nginx/sites-available/
-sudo cp /home/tfc_prod/tfc_prod/nginx/sites-available/smartcambridge.conf /etc/nginx/sites-available/
-sudo cp /home/tfc_prod/tfc_prod/nginx/sites-available/carrier.csi.cam.ac.uk.conf /etc/nginx/sites-available/
+sudo cp ~acp_prod/acp_prod/nginx/sites-available/acp_prod2.conf /etc/nginx/sites-available/
+sudo cp ~acp_prod/acp_prod/nginx/sites-available/smartcambridge.conf /etc/nginx/sites-available/
+sudo cp ~acp_prod/acp_prod/nginx/sites-available/carrier.csi.cam.ac.uk.conf /etc/nginx/sites-available/
 ```
 
 After nginx is restarted (see next section) your existing server services should still
@@ -176,8 +176,8 @@ Install default vhost config and a 'dummy' ssl key and certificate
 
 ```
 sudo mkdir /etc/nginx/ssl
-sudo cp /home/tfc_prod/tfc_prod/nginx/dummy.key /etc/nginx/ssl/
-sudo cp /home/tfc_prod/tfc_prod/nginx/dummy.crt /etc/nginx/ssl/
+sudo cp ~acp_prod/acp_prod/nginx/dummy.key /etc/nginx/ssl/
+sudo cp ~acp_prod/acp_prod/nginx/dummy.crt /etc/nginx/ssl/
 sudo ln -s /etc/nginx/sites-available/000-default.conf /etc/nginx/sites-enabled/
 ```
 
@@ -203,11 +203,11 @@ You should be able to confirm access is enabled via https, and http requests are
 
 Feeds can be tested with:
 ```
-~tfc_prod/tfc_prod/tools/feeds.sh
+~acp_prod/acp_prod/tools/feeds.sh
 ```
 
 There are no problems, and some advantages, in enabling `smartcambridge.org`, `www.smartcambridge.org`,
-`carrier.csi.cam.ac.uk` on many or all machines. Only the machines coresponding to those names in the 
+`carrier.csi.cam.ac.uk` on many or all machines. Only the machines coresponding to those names in the
 DNS will actually recieve traffic for those hosts.
 
 ## Setup certificate renewals:
