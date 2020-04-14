@@ -3,7 +3,28 @@
 These steps describe the process of getting from a bare brand new server to a running ACP real-time server
 platform. The specific machine comments, e.g. regarding iTrac relate to a Dell PowerEdge server.
 
-### Install Ubuntu on the server
+## Summary steps / checklist
+
+1. [Install Ubuntu on the server](#install-ubuntu-on-the-server)
+
+2. [Create (non-sudo) acp_prod user](#create-non-sudo-acp_prod-user)
+
+3. As `acp_prod` user [clone this `acp_prod` repo](#get-latest-acp_prod-build)
+
+4. [Install nginx](nginx/README.md)
+
+5. [Install Java](#install-java-8-sdk)
+
+6. [Install zookeeper](https://github.com/AdaptiveCity/acp_zookeeper)
+
+7. [Setup data directories](#create-data-directory-links)
+
+8. [Setup MQTT](https://github.com/AdaptiveCity/acp_local_mqtt)
+
+9. [Install `acp_server`](#add-the-acp_server-jar-file-to-the-acp_prod-directory)
+
+
+## Install Ubuntu on the server
 
 These instructions assume you've downloaded the appropriate Ubuntu Server iso image, e.g. from
 ```
@@ -21,7 +42,7 @@ Dell F11 - enter boot manager
 One-shot UEFI Boot
 Disk connected to front USB 1
 
-##### Installation options:
+### Installation options:
 Install Ubuntu
 + Download while installing
 + Install 3rd party
@@ -33,7 +54,7 @@ Install Ubuntu
 + English (UK) Extended winkeys
 + Enter user details, e.g. for Computer Name use 'tfc-appN'
 
-## Networking
+### Networking
 
 Usually the IP parameters will be set during the boot process.
 
@@ -204,7 +225,7 @@ by an identical entry with the `csbb.uk` and `www.cddb.uk` hostnames.
 
 See [nginx/README.md](nginx/README.md)
 
-### Install Java 8 SDK (JRE?)
+### Install Java 8 SDK
 
 ```
 sudo apt-get install openjdk-8-jdk

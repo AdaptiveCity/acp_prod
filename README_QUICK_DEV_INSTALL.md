@@ -2,7 +2,25 @@
 
 This will get the Adaptive City real-time platform running on a local development machine.
 
-For a complete installation see README.md. This installation doesn't set up certificates or SSL.
+## Differences from production install
+
+These changes are suggested below from a 'production' installation to speed up / simplify the
+installation on a local dev box. It would be relatively simple to selectively add back in the
+'production' features, e.g. zookeeper.
+
+1. Hazelcast used for vertx peer sync rather than zookeeper.
+
+2. Data storage within the root filesystem rather than defined additional drives.
+
+3. No letsencrypt certificates so port 80 http and port 1883 mqtt only.
+
+4. Crontab @reboot not used to auto restart.
+
+5. No implementation of monitoring.
+
+For a complete installation see [acp_prod/README.md](README.md).
+
+## Dev installation steps
 
 ```
 git clone https://github.com/AdaptiveCity/acp_server
