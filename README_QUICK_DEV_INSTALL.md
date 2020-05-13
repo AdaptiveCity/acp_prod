@@ -26,6 +26,9 @@ For a complete installation see [acp_prod/README.md](README.md).
 git clone https://github.com/AdaptiveCity/acp_server
 sudo apt install maven
 cd acp_server
+```
+Edit `pom.xml` and replace `vertx-zookeeper` with `vertx-hazelcast`.
+```
 mvn clean package
 ```
 
