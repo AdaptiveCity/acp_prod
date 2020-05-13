@@ -135,3 +135,5 @@ rtroute_config.js
 secrets*
 secrets/
 
+configs/zookeeper.json
+
