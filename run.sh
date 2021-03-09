@@ -26,7 +26,7 @@ nohup java -cp "$ACP_JAR:secrets:configs" -Xmx100m -Xms10m -Xmn2m -Xss10m io.ver
 # ################  LOCAL MQTT FEED HANDLER       #############################################
 # #############################################################################################
 
-nohup java -cp "$ACP_JAR:secrets:configs" -Xmx100m -Xms10m -Xmn2m -Xss10m io.vertx.core.Launcher run "service:feedmqtt.local" -cluster >/dev/null 2>>/var/log/acp_prod/feedmqtt.local.err & disown
+nohup java -cp "$ACP_JAR:secrets:configs" -Xmx100m -Xms10m -Xmn2m -Xss10m io.vertx.core.Launcher run "service:feedmqtt.local_v3" -cluster >/dev/null 2>>/var/log/acp_prod/feedmqtt.local_v3.err & disown
 
 # #############################################################################################
 # ################  MQTT MSGFILER                #############################################
@@ -40,4 +40,3 @@ nohup java -cp "$ACP_JAR:secrets:configs" -Xmx100m -Xms10m -Xmn2m -Xss10m io.ver
 
 # RTMONITOR.A
 nohup java -cp "$ACP_JAR:secrets:configs" -Xmx100m -Xms10m -Xmn2m -Xss10m io.vertx.core.Launcher run "service:rtmonitor.A" -cluster >/dev/null 2>>/var/log/acp_prod/rtmonitor.A.err & disown
-
