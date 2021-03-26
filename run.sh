@@ -23,16 +23,20 @@ cd $SCRIPT_DIR
 nohup java -cp "$ACP_JAR:secrets:configs" -Xmx100m -Xms10m -Xmn2m -Xss10m io.vertx.core.Launcher run "service:console.A" -cluster >/dev/null 2>>/var/log/acp_prod/console.A.err & disown
 
 # #############################################################################################
-# ################  LOCAL MQTT FEED HANDLER       #############################################
+# ################  MQTT FEED HANDLERS       #############################################
 # #############################################################################################
 
-nohup java -cp "$ACP_JAR:secrets:configs" -Xmx100m -Xms10m -Xmn2m -Xss10m io.vertx.core.Launcher run "service:feedmqtt.local_v3" -cluster >/dev/null 2>>/var/log/acp_prod/feedmqtt.local_v3.err & disown
+nohup java -cp "$ACP_JAR:secrets:configs" -Xmx300m -Xms30m -Xmn6m -Xss30m io.vertx.core.Launcher run "service:feedmqtt.csn" -cluster >/dev/null 2>>/var/log/acp_prod/feedmqtt.csn.err & disown
+
+nohup java -cp "$ACP_JAR:secrets:configs" -Xmx300m -Xms30m -Xmn6m -Xss30m io.vertx.core.Launcher run "service:feedmqtt.ttn_v3" -cluster >/dev/null 2>>/var/log/acp_prod/feedmqtt.ttn_v3.err & disown
+
+nohup java -cp "$ACP_JAR:secrets:configs" -Xmx300m -Xms30m -Xmn6m -Xss30m io.vertx.core.Launcher run "service:feedmqtt.acp" -cluster >/dev/null 2>>/var/log/acp_prod/feedmqtt.acp.err & disown
 
 # #############################################################################################
 # ################  MQTT MSGFILER                #############################################
 # #############################################################################################
 
-nohup java -cp "$ACP_JAR:secrets:configs" -Xmx100m -Xms10m -Xmn2m -Xss10m io.vertx.core.Launcher run "service:msgfiler.mqtt" -cluster >/dev/null 2>>/var/log/acp_prod/msgfiler.mqtt.err & disown
+nohup java -cp "$ACP_JAR:secrets:configs" -Xmx300m -Xms30m -Xmn6m -Xss30m io.vertx.core.Launcher run "service:msgfiler.mqtt" -cluster >/dev/null 2>>/var/log/acp_prod/msgfiler.mqtt.err & disown
 
 # #############################################################################################
 # ################   RTMONITOR                    #############################################
