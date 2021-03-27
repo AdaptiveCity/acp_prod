@@ -1,4 +1,4 @@
-                                                                                
+
 {
     "main":    "acp_server.msgfiler.MsgFiler",
     "options":
@@ -24,8 +24,8 @@
                 },
                 { "source_address": "acp.feedmqtt.ttn",
                   "flatten":    "request_data",
-                  "store_path": "/media/acp/{{feed_id}}/sensors/{{dev_id}}/{{acp_ts|yyyy}}/{{acp_ts|MM}}",
-                  "store_name": "{{dev_id}}_{{acp_ts|yyyy}}-{{acp_ts|MM}}-{{acp_ts|dd}}.txt",
+                  "store_path": "/media/acp/{{feed_id}}/sensors/{{acp_id}}/{{acp_ts|yyyy}}/{{acp_ts|MM}}",
+                  "store_name": "{{acp_id}}_{{acp_ts|yyyy}}-{{acp_ts|MM}}-{{acp_ts|dd}}.txt",
                   "store_mode": "append"
                 },
                 { "source_address": "acp.feedmqtt.acp",
@@ -35,7 +35,7 @@
                   "store_mode": "append"
                 }
             ]
-              
+
           }
         }
 }
